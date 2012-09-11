@@ -29,12 +29,30 @@ Matrix transposed := method(
 	res
 )
 
+Matrix toFile := method(path,
+	File open(path) write(self serialized) close
+)
+
+Matrix fromFile := method(path,
+	file := File open(path) 
+	lines := file readToEnd() 
+	file close
+	self copy(doString(lines))
+)
+
+
+
+
 m := Matrix clone
 
 m dim(2,3)
-m pprint
+# m pprint
 
 m set(1,2, "omg")
-m pprint
+# m pprint
 
-m transposed pprint
+# m transposed pprint
+
+file := "matrix.tmp"
+m toFile(file)
+Matrix fromFile(file) pprint
