@@ -1,3 +1,6 @@
+# Implementation of Fibonacci sequence. 
+# Both iterative and recursive solutions.
+
 fibonacci := Object clone
 recursive := fibonacci clone
 iterative := fibonacci clone
