@@ -1,34 +1,25 @@
 solution := Random value(1,100) floor
-solution := 42 # debug
 diff := nil
+prev_diff := nil
 guess := nil
-tries := 10
+tries := 0
 
-debug := method(
-	"-----------" println
-	"diff     #{diff}" interpolate println
-	"tries    #{tries}" interpolate println
-	"guess    #{guess}" interpolate println
-	"solution #{solution}" interpolate println
-)
-
-do_guess := method(diff,
+while(tries < 10 and diff != 0, 
 	if (diff == nil) then (
-		"Guess a number between 1 and 100: " print
-	) else (
-		"Guess again! (#{tries} tries left): " interpolate print
+		"Guess a number between 1 and 100 " println
+	) elseif (prev_diff == nil) then(
+		"Nope, try again!" println
+	) else(
+		if (diff > prev_diff, "Colder...", "Hotter...") println
 	)
-	File standardInput readLine asNumber
+	guess = File standardInput readLine asNumber
+	prev_diff = diff
+	diff = (guess - solution) abs
+	tries = tries + 1
 )
 
-while(tries > 0 and diff != 0, 
-	guess := do_guess(diff)
-	diff = guess - solution
-	diff = diff abs
-	tries = tries - 1
-	debug
-)
+if (diff == 0, 
+	"Correct!", 
+	"BEEP! The solution was #{solution}..." interpolate
+) println
 
-if (diff == 0,
-	"Correct!" println,
-	"The solution was #{solution}..." interpolate println)
