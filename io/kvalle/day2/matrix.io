@@ -34,24 +34,19 @@ Matrix toFile := method(path,
 )
 
 Matrix fromFile := method(path,
-	file := File open(path) 
-	lines := file readToEnd() 
-	file close
-	self copy(doString(lines))
+	self copy(doString(File with(path) openForReading contents))
 )
-
-
 
 
 m := Matrix clone
 
 m dim(2,3)
-# m pprint
+m pprint
 
 m set(1,2, "omg")
-# m pprint
+m pprint
 
-# m transposed pprint
+m transposed pprint
 
 file := "matrix.tmp"
 m toFile(file)
