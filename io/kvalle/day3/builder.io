@@ -1,23 +1,24 @@
 Builder := Object clone
 
 Builder level := 0
-Builder indent := 2
+Builder tabsize := 2
+
+Builder indent := method(self level = level + tabsize)
+Builder unindent := method(self level = level - tabsize)
+
+Builder tab := method(for(i, 1, level, write(" ")))
 
 Builder forward := method(
-	for(i, 1, level, write(" "))
-	writeln("<", call message name, ">")
-	self level = level + indent
-
-	call message arguments foreach(
-		arg, 
-		content := self doMessage(arg); 
+	label := call message name
+	tab; writeln("<#{label}>" interpolate)
+	indent
+	call message arguments foreach(arg, 
+		content := self doMessage(arg)
 		if(content type == "Sequence", 
-			for(i, 1, level, write(" "))
-			writeln(content)))
-  
-	self level = level - indent
-	for(i, 1, level, write(" "))
-	writeln("</", call message name, ">"))
+			tab; self writeln(content)))
+	unindent
+	tab; writeln("</#{label}>" interpolate)
+)
 
 
 Builder html(
