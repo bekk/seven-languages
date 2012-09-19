@@ -17,3 +17,7 @@
 - [/r/iolanguage](http://www.reddit.com/r/iolanguage)
 - [#io på FreeNode](irc://irc.freenode.net/io)
 
+### Annet
+
+Hvis en får trøbbel i oppgavene til dag 3 med at operatorer ikke blir lagt til som de skal, kan det være verdt å lese følgende:  
+http://stackoverflow.com/questions/10383065/why-does-the-io-repl-and-the-interpreter-give-me-two-different-values
