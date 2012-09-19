@@ -14,4 +14,9 @@ Map atPutNumber := method(
        call evalArgAt(1))
 )
 
-doFile("testCurlies.io")
+Map asParameters := method(
+	l := List clone
+	self foreach(key, value,
+		l append("#{key}=\"#{value}\"" interpolate))
+	l
+)
