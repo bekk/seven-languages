@@ -14,4 +14,3 @@ Map atPutNumber := method(
        call evalArgAt(1))
 )
 
-doFile("testCurlies.io")

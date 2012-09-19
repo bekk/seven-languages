@@ -20,10 +20,3 @@ Builder forward := method(
 	tab; writeln("</#{label}>" interpolate)
 )
 
-
-Builder html(
-			ul(
-				li("Io"), 
-				li("Lua"), 
-				li("JavaScript")),
-			p("Some text"))
