@@ -1,47 +1,42 @@
 doFile("curlies.io")
 
+Object asParameters := ""
+
+Map asParameters := method(
+	params := List clone
+	foreach(key, value,	
+		params append("#{key}=\"#{value}\"" interpolate))
+	" " .. params join(" "))
+
 Builder := Object clone
 Builder level := 0
 Builder tabsize := 2
 
-Builder indent := method(self level = level + tabsize)
-Builder unindent := method(self level = level - tabsize)
+Builder tab := method(" " repeated(level))
 
-Builder tab := method(
-	str := ""
-	for(i, 1, level, str = str .. " ")
-	str)
-
-Builder start := method(label, parameters,
-	params := if(parameters, " #{parameters}" interpolate, "")
-	tag := "#{tab}<#{label}#{params}>\n" interpolate
-	indent
+Builder startTag := method(label, parameters,
+	tag := "#{tab}<#{label}#{parameters}>\n" interpolate
+	level = level + tabsize
 	tag)
 
-Builder end := method(label,
-	unindent
+Builder endTag := method(label,
+	level = level - tabsize
 	"#{tab}</#{label}>\n" interpolate)
 
 Builder forward := method(
 	html := ""
-
-	parameters := nil
-	first := call message arguments first
-	content := if (first, self doMessage(first), nil)
-	if(content and content type == "Map", 
-		parameters := content asParameters join(" "))
-
+	parameters := doMessage(call message arguments first) asParameters
 	label := call message name
-	html := html .. start(label, parameters)
 
+	html := html .. startTag(label, parameters)
 	call message arguments foreach(arg, 
-		content := self doMessage(arg)
+		content := doMessage(arg)
 		if(content type == "Sequence",
 			if(content beginsWithSeq(" ")) then(
-				html = "#{html}#{content}" interpolate
+				html = html .. content
 			) else (
 				html = "#{html}#{tab}#{content}\n" interpolate)))
-	
-	html = html .. end(label))
+	html = html .. endTag(label))
+
 
 doFile("testBuilder.io")

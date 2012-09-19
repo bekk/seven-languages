@@ -13,10 +13,3 @@ Map atPutNumber := method(
        call evalArgAt(0) asMutable removePrefix("\"") removeSuffix("\""),
        call evalArgAt(1))
 )
-
-Map asParameters := method(
-	l := List clone
-	self foreach(key, value,
-		l append("#{key}=\"#{value}\"" interpolate))
-	l
-)
