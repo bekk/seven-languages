@@ -16,6 +16,3 @@ fib := method(num,
 fib(1) println
 fib(4) println
 fib(8) println
-
-
-

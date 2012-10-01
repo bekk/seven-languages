@@ -1,0 +1,115 @@
+# Io - http://iolanguage.com
+# Laget av Steve Dekorte for å forstå programeringsspråk bedre
+
+# Lite community
+# Veldig vanskelig å google
+# Enkel og low-level syntaks
+
+# Interpretert
+# Kjede av meldinger som hver returnerer et objekt, hvor hver melding kan ta parametere
+# Alt er meldinger som returnerer en ny mottaker (receiver)
+# Ingen keywords, og bare noen få tegn som oppfører seg som keywords
+
+# Hello World - Sender meldingen print til strengen "Hello World"
+"Hello World" print
+
+# Sterkt typet
+1 + 1
+1 + "one"
+
+# Ingen klasser, kun objekter
+# Prototypet, du kloner objekter
+
+# Klone objekt
+Fremkomstmiddel := Object clone
+
+# Objekter har slots (key-value)
+Fremkomstmiddel beskrivelse := "Tar deg fra A til B"
+
+# Du får en slots verdi ved å sende nøkkelen som en message
+Fremkomstmiddel beskrivelse
+
+Fremkomstmiddel slotNames
+
+# Alt er objekter, også typen
+Fremkomstmiddel type type
+
+# Arv (prototypet)
+Bil := Fremkomstmiddel clone
+Bil slotNames
+Bil beskrivelse
+
+ferrari := Bil clone
+ferrari slotNames
+
+# Typer begynner med uppercase (typer er kun en konvensjon for å organisere koden, hvor uppercase-objekter har type, og lowercase kaller opp prototype kjeden)
+ferrari type
+
+# Metoder
+method("Kun ett argument" println)
+
+# Metoder er objekter
+method() type
+
+# Metoder kan puttes i slotter
+ferrari giGass := method("Vroooooom" println)
+
+# Hente en slot (returnerer metoden/objektet i stedet for kalle det)
+ferrari getSlot("giGass")
+
+# Hente et objekts prototype
+ferrari proto
+Bil proto
+
+# Master namespace
+Lobby
+
+# Lister og maps
+liste := List clone
+farger := list("rød", "grønn", "blå")
+farger size
+farger append("gul")
+farger proto slotNames
+
+elvis := Map clone
+tall atPut("hjemme", "Graceland")
+tall atPut("musikkstil", "Rock and roll")
+tall at("hjemme")
+
+# Singleton (true, false, nil er singletons)
+Eneste := Object clone
+Eneste clone := Eneste
+ene := Eneste clone
+andre := Eneste clone
+ene == andre
+
+# Løkker
+loop("Run forever" println)
+i := 1; while(i <= 10, i println; i = i + 1)
+for(i, 1, 10, i println)
+if(true, "Sant", "Usant")
+if(false) then("Sant") else("Usant")
+
+# Operatorer (syntaktisk sukker)
+OperatorTable
+
+# Meldinger (name, sender, target, arguments) - kan brukes til reflection
+ferrari giGass := method("Vroooooom" println; "Name: " print; call message name print; "\nSender: " print; call sender print; "\nTarget: " print; call target print)
+Råner := Object clone
+Råner råne := method(ferrari giGass)
+Råner råne
+
+ferrari argumenter := method(call message arguments)
+ferrari argumenter(1, "to", 3, 3+1)
+
+ferrari metodenavn := method(call message name)
+ferrari metodenavn
+
+# Io bruker send by name, ikke send by value. Argumentene legges som meldinger på stack (med kontekst), i stedet for resultatverdien.
+# doMessage kan brukes til å eksekvere en melding
+unless := method((call sender doMessage(call message argAt(0))) ifFalse(call sender doMessage(call message argAt(1))) ifTrue(call sender doMessage(call message argAt(2))))
+				
+unless(1 == 2, write("En er ikke to\n"), write("En er to\n"))
+
+# Concurrency (coroutines, actors, and futures)
+
