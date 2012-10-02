@@ -1,5 +1,3 @@
-/* facts */
-
 book(foundation).
 book(freakonomics).
 book(a-hole-in-space).
@@ -39,8 +37,6 @@ Author = levitt
 yes
 */
 
-has_author(Book) :- book(Book), written_by(Book, X), author(X).
-
 multiple_authors(Book) :- written_by(Book, X), written_by(Book, Y), \+(X = Y), author(X), author(Y).
 
 /*
@@ -50,6 +46,7 @@ Book = freakonomics
 no
 */
 
+has_author(Book) :- book(Book), written_by(Book, X), author(X).
 single_author(Book) :- has_author(Book), \+(multiple_authors(Book)).
 
 /*
