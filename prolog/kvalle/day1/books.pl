@@ -14,6 +14,11 @@ author(orwell).
 author(levitt).
 author(dubner).
 
+/*
+| ?- author(levitt).
+yes
+*/
+
 written_by(foundation, asimov).
 written_by(freakonomics, dubner).
 written_by(freakonomics, levitt).
@@ -22,18 +27,7 @@ written_by(ringworld, niven).
 written_by(animal-farm, orwell).
 written_by(nineteen-eighty-four, orwell).
 
-/* rules */
-
-has_author(Book) :- book(Book), written_by(Book, X).
-multiple_authors(Book) :- written_by(Book, X), written_by(Book, Y), \+(X = Y), author(X), author(Y).
-single_author(Book) :- has_author(Book), \+(multiple_authors(Book)).
-
-/* query examples */
-
 /*
-author(levitt).
-yes
-
 | ?- written_by(Book, orwell).
 Book = animal-farm ? ;
 Book = nineteen-eighty-four
@@ -43,17 +37,27 @@ Book = nineteen-eighty-four
 Author = dubner ? a
 Author = levitt
 yes
+*/
 
+has_author(Book) :- book(Book), written_by(Book, X), author(X).
+
+multiple_authors(Book) :- written_by(Book, X), written_by(Book, Y), \+(X = Y), author(X), author(Y).
+
+/*
+| ?- multiple_authors(Book).
+Book = freakonomics ? a
+Book = freakonomics
+no
+*/
+
+single_author(Book) :- has_author(Book), \+(multiple_authors(Book)).
+
+/*
 | ?- single_author(Book).
 Book = foundation ? a
 Book = a-hole-in-space
 Book = ringworld
 Book = animal-farm
 Book = nineteen-eighty-four
-no
-
-| ?- multiple_authors(Book).
-Book = freakonomics ? a
-Book = freakonomics
 no
 */
