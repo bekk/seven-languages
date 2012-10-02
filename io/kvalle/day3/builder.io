@@ -1,5 +1,3 @@
-doFile("curlies.io")
-
 Object asParameters := ""
 
 Map asParameters := method(
@@ -38,5 +36,5 @@ Builder forward := method(
 				html = "#{html}#{tab}#{content}\n" interpolate)))
 	html = html .. endTag(label))
 
-
+doFile("curlies.io")
 doFile("testBuilder.io")

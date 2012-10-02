@@ -3,7 +3,7 @@ html := Builder html(
 		title(
 			"Hi ho, Io!")), 
 	body(
-		div({"type":"article"}, 
+		div({"type":"article", "style":"fancy"}, 
 			p(
 				"Hey ho, Io"),
 			p(
