@@ -3,7 +3,7 @@ valid([Head|Tail]) :-
     fd_all_different(Head), 
     valid(Tail).
 
-sudoku(Puzzle, Solution) :-
+sudoku(Puzzle) :-
         Solution = Puzzle,
         Puzzle = [S11, S12, S13, S14, S15, S16, S17, S18, S19,
                   S21, S22, S23, S24, S25, S26, S27, S28, S29,
@@ -49,8 +49,20 @@ sudoku(Puzzle, Solution) :-
         
         valid([Row1, Row2, Row3, Row4, Row5, Row6, Row7, Row8, Row9,
                Col1, Col2, Col3, Col4, Col5, Col6, Col7, Col8, Col9,
-               Square1, Square2, Square3, Square4, Square5, Square6, Square7, Square8, Square9]).
-        
+               Square1, Square2, Square3, Square4, Square5, Square6, Square7, Square8, Square9]),
+
+
+        nl,
+        write(Row1), nl,
+        write(Row2), nl,
+        write(Row3), nl,
+        write(Row4), nl,
+        write(Row5), nl,
+        write(Row6), nl,
+        write(Row7), nl,
+        write(Row8), nl,
+        write(Row9), nl.
+
 /*
 | ?- sudoku([5, 3, _,  _, 7, _,  _, _, _, 
              6, _, _,  1, 9, 5,  _, _, _, 
@@ -62,10 +74,17 @@ sudoku(Puzzle, Solution) :-
              
              _, 6, _,  _, _, _,  2, 8, _, 
              _, _, _,  4, 1, 9,  _, _, 5, 
-             _, _, _,  _, 8, _,  _, 7, 9],
-             Solution).
+             _, _, _,  _, 8, _,  _, 7, 9]).
 
-Solution = [5,3,4,6,7,8,9,1,2,6,7,2,1,9,5,3,4,8,1,9,8,3,4,2,5,6,7,8,5,9,7,6,1,4,2,3,4,2,6,8,5,3,7,9,1,7,1,3,9,2,4,8,5,6,9,6,1,5,3,7,2,8,4,2,8,7,4,1,9,6,3,5,3,4,5,2,8,6,1,7,9]
+[5,3,4,6,7,8,9,1,2]
+[6,7,2,1,9,5,3,4,8]
+[1,9,8,3,4,2,5,6,7]
+[8,5,9,7,6,1,4,2,3]
+[4,2,6,8,5,3,7,9,1]
+[7,1,3,9,2,4,8,5,6]
+[9,6,1,5,3,7,2,8,4]
+[2,8,7,4,1,9,6,3,5]
+[3,4,5,2,8,6,1,7,9]
 
 yes
 */
