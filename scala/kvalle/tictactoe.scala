@@ -12,12 +12,14 @@ import CellValue._
 class Board {
 
   val board = MutableList.fill(9)(BLANK)
-  
+
   def setCell(index: Int, value: CellValue) = board.update(index, value)
-  def done() = !board.contains(BLANK) || winner != None
+    
   def rows() = board.grouped(3)
   def cols() = board.zipWithIndex.groupBy(_._2 % 3).map(_._2.map(_._1))
+  def diags() = List(List(board(0), board(4), board(8)), List(board(2), board(4), board(6)))
 
+  def done() = !board.contains(BLANK) || winner != None
   def winner() : Option[CellValue] = {
     rows.foreach { line => 
       if (line.distinct.size == 1 && !line.contains(BLANK)) {
@@ -25,6 +27,11 @@ class Board {
       }
     }
     cols.foreach { line => 
+      if (line.distinct.size == 1 && !line.contains(BLANK)) {
+        return Some(line.first)
+      }
+    }
+    diags.foreach { line => 
       if (line.distinct.size == 1 && !line.contains(BLANK)) {
         return Some(line.first)
       }
@@ -41,17 +48,6 @@ class Board {
     println
   }
 }
-
-/*
-val b = new Board()
-b.setCell(0,X)
-b.setCell(1,X)
-b.setCell(4,O)
-b.setCell(5,O)
-b.setCell(6,O)
-b.print
-println(b.cols)
-*/
 
 println("Cell positions: \n")
 println(" 0 1 2")
