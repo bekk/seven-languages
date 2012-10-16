@@ -15,23 +15,15 @@ class Board {
 
   def setCell(index: Int, value: CellValue) = board.update(index, value)
     
-  def rows() = board.grouped(3)
+  def rows() = board.grouped(3).toList
   def cols() = board.zipWithIndex.groupBy(_._2 % 3).map(_._2.map(_._1))
-  def diags() = List(List(board(0), board(4), board(8)), List(board(2), board(4), board(6)))
+  def diags() = List(MutableList(board(0), board(4), board(8)), MutableList(board(2), board(4), board(6)))
 
   def done() = !board.contains(BLANK) || winner != None
+
   def winner() : Option[CellValue] = {
-    rows.foreach { line => 
-      if (line.distinct.size == 1 && !line.contains(BLANK)) {
-        return Some(line.first)
-      }
-    }
-    cols.foreach { line => 
-      if (line.distinct.size == 1 && !line.contains(BLANK)) {
-        return Some(line.first)
-      }
-    }
-    diags.foreach { line => 
+    val lines = rows ++ cols ++ diags
+    lines.foreach { line => 
       if (line.distinct.size == 1 && !line.contains(BLANK)) {
         return Some(line.first)
       }
@@ -48,6 +40,12 @@ class Board {
     println
   }
 }
+
+/*
+val board = new Board()
+println(board.rows ++ board.cols ++ board.diags)
+*/
+
 
 println("Cell positions: \n")
 println(" 0 1 2")
