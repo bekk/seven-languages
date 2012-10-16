@@ -14,18 +14,16 @@ class Board {
   val board = MutableList.fill(9)(BLANK)
   
   def setCell(index: Int, value: CellValue) = board.update(index, value)
-  def done() = !board.contains(BLANK) || winner
+  def done() = !board.contains(BLANK) || winner != None
   def rows() = board.grouped(3)
 
-  def winner() : Boolean = {
-    val lines = rows
-    lines.foreach { row => 
+  def winner() : Option[CellValue] = {
+    rows.foreach { row => 
       if (row.distinct.size == 1 && !row.contains(BLANK)) {
-        println("We have a winner: " + row.first)
-        return true
+        return Some(row.first)
       }
     }
-    return false
+    return None
   }
 
   def print() {
@@ -36,27 +34,21 @@ class Board {
     }
     println
   }
-
-
 }
 
-def printPositions() {
-  println("Cell positions: \n")
-  println(" 0 1 2")
-  println(" 3 4 5")
-  println(" 6 7 8\n")
-}
-
-// PLAY:
-
-printPositions
+println("Cell positions: \n")
+println(" 0 1 2")
+println(" 3 4 5")
+println(" 6 7 8\n")
 
 var player = X
 val b = new Board()
 while(!b.done) {
-  print("Select position: ")
+  print("Select position for player " + player +": ")
   val pos = readLine().toInt
   b.setCell(pos, player)
   player = if (player == X) O else X
   b.print
 }
+
+println("Winner: " + b.winner)
