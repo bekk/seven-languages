@@ -16,11 +16,17 @@ class Board {
   def setCell(index: Int, value: CellValue) = board.update(index, value)
   def done() = !board.contains(BLANK) || winner != None
   def rows() = board.grouped(3)
+  def cols() = board.zipWithIndex.groupBy(_._2 % 3).map(_._2.map(_._1))
 
   def winner() : Option[CellValue] = {
-    rows.foreach { row => 
-      if (row.distinct.size == 1 && !row.contains(BLANK)) {
-        return Some(row.first)
+    rows.foreach { line => 
+      if (line.distinct.size == 1 && !line.contains(BLANK)) {
+        return Some(line.first)
+      }
+    }
+    cols.foreach { line => 
+      if (line.distinct.size == 1 && !line.contains(BLANK)) {
+        return Some(line.first)
       }
     }
     return None
@@ -35,6 +41,17 @@ class Board {
     println
   }
 }
+
+/*
+val b = new Board()
+b.setCell(0,X)
+b.setCell(1,X)
+b.setCell(4,O)
+b.setCell(5,O)
+b.setCell(6,O)
+b.print
+println(b.cols)
+*/
 
 println("Cell positions: \n")
 println(" 0 1 2")
