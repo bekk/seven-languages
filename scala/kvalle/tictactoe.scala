@@ -17,7 +17,8 @@ class Board {
     
   def rows() = board.grouped(3).toList
   def cols() = board.zipWithIndex.groupBy(_._2 % 3).map(_._2.map(_._1))
-  def diags() = List(MutableList(board(0), board(4), board(8)), MutableList(board(2), board(4), board(6)))
+  def diags() = List(MutableList(board(0), board(4), board(8)), 
+                      MutableList(board(2), board(4), board(6)))
 
   def done() = !board.contains(BLANK) || winner != None
 
@@ -41,11 +42,7 @@ class Board {
   }
 }
 
-/*
-val board = new Board()
-println(board.rows ++ board.cols ++ board.diags)
-*/
-
+/* PLAY GAME! */
 
 println("Cell positions: \n")
 println(" 0 1 2")
