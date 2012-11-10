@@ -1,0 +1,23 @@
+-module(day1).
+-export([words/1,count/0,select/1]).
+
+% Write a function that uses recursion to return the number of words in a string.
+
+words([]) -> 0;
+words([_|T]) -> 1 + words(T).
+
+% Write a function that uses recursion to count to ten.
+
+print(N) -> io:fwrite("~w ",[N]).
+
+count(10) -> print(10);
+count(N) -> print(N), 
+	count(N+1).
+
+count() -> count(1).
+
+% Write a function that uses matching to selectively print "success"
+% or "error: message" given input of the form {error, Message} or success.
+
+select(success) -> io:fwrite("success~n",[]);
+select({error, Message}) -> io:fwrite("error: ~s~n",[Message]).
