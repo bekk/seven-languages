@@ -3,12 +3,14 @@
 // store the curse words and their alternatives.
 
 trait Cencor {	
-	val c = Map("shoot" -> "pucky",	"darn" -> "beans")
+	var curses = Map[String, String]()
 
-	def censor(string: String) = {
-		def cw(word: String) = if(c.contains(word)) c(word) else word
-		string.split(" ").toList.map(cw).mkString(" ")
+	io.Source.fromFile("curses.txt").getLines().foreach { (line) =>
+		val words = line.split(":")
+		curses += words(0) -> words(1)
 	}
+
+	def censor(string: String) = curses.foldLeft(string)((res, cw) => res.replaceAll(cw._1, cw._2))
 }
 
 class Text( val content: String ) extends Cencor {
