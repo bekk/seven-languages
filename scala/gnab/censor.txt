@@ -1,0 +1,2 @@
+Darn=Pucky
+Shoot=Beans
