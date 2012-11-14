@@ -10,7 +10,7 @@ words([_|String]) ->
 
 % Write a function that uses recursion to count to ten.
 
-print(N) -> io:fwrite("~w ",[N]).
+print(N) -> io:fwrite("~p ",[N]).
 
 count(10) -> print(10);
 count(N) -> print(N), 
@@ -22,4 +22,4 @@ count() -> count(1).
 % or "error: message" given input of the form {error, Message} or success.
 
 select(success) -> io:fwrite("success~n",[]);
-select({error, Message}) -> io:fwrite("error: ~s~n",[Message]).
+select({error, Message}) -> io:fwrite("error: ~p~n",[Message]).
