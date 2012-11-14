@@ -2,27 +2,31 @@
 
 -module(doctor).
 -export([loop/0, start/0]).
-
 loop() ->
     process_flag(trap_exit, true), 
     receive
         new ->
-            io:format("Creating and monitoring process for ~p attachted to atom ~p.~n", [Fun, Atom]),
-            register(gun, spawn_link(fun roulette:loop/0)),
+            io:format("Creating and monitoring process.~n"),
+            %register(revolver, spawn_link(fun roulette:loop/0)),
             loop();
-        {'EXIT', Pid, normal} -> % not a crash
-            ok;
-        {'EXIT', Pid, shutdown} -> % manual termination, not a crash
-            ok;
-        {'EXIT', _, Reason} -> 
-            io:format("~p died with reason ~p.", [Atom, Reason]),
-            io:format(" Restarting. ~n"),
+        die ->
+            io:format("Oh shit...~n"), 
+            exit({doctor,die,at,erlang:time()});
+        help ->
+            io:format("Here, have a medkit!~n");
+        {'EXIT', From, Reason} -> 
+            io:format("The shooter ~p died with reason ~p. Restaring.~n", 
+                [From, Reason]),
             self() ! new, 
             loop()
         end.
 
 start() ->
-    Doctor = spawn(doctor, loop, []),
-    Doctor ! new,
-    Doctor.
-
+    process_flag(trap_exit, true), 
+    register(doc, spawn_link(fun loop/0)),
+    doc ! new,
+    receive
+        {'EXIT', From, _} -> 
+            io:format("Ressurecting the doctor ~p.~n", [From]),
+            start()
+        end.
