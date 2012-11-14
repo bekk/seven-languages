@@ -4,7 +4,9 @@
 % Write a function that uses recursion to return the number of words in a string.
 
 words([]) -> 0;
-words([_|T]) -> 1 + words(T).
+words([_|String]) -> 
+	Rest = lists:dropwhile(fun(E) -> E/=32 end, String),
+	1 + words(Rest).
 
 % Write a function that uses recursion to count to ten.
 
