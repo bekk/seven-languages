@@ -8,10 +8,12 @@
     handle_info/2, 
     terminate/2, 
     code_change/3,
-    stop/0
+    stop/0,
+    poison/0
 ]).
 
 stop() -> gen_server:cast(doctor, stop).
+poison() -> gen_server:cast(doctor, poison).
 
 % -- Callback functions
 
@@ -33,6 +35,8 @@ handle_cast(Message, State) ->
             {noreply, State};
         stop ->
             {stop, normal, State};
+        poison ->
+            {stop, aaargh, State};
         _ -> 
             {noreply, State}
     end.
