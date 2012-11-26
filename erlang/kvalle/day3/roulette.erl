@@ -1,3 +1,5 @@
+% Roulette process unchanged from the book.
+
 -module(roulette).
 -export([loop/0]).
 

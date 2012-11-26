@@ -1,3 +1,16 @@
+% implementation of the doctor using gen_server.
+% test by starting the doctor: 
+%
+%    doctor:start_link()
+%
+% and then playing some rounds of roulete:
+%
+%   revolver ! 1.
+%   revolver ! 3.
+%   revolver ! 3.
+%
+% etc
+
 -module(doctor).
 -behaviour(gen_server).
 -export([

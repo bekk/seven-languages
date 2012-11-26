@@ -1,11 +1,13 @@
+% Supervisor for ressurecting the doctor should it die.
+% Test using doctor:poison() to kill the doctor.
+
 -module(metadoctor).
 -behaviour(supervisor).
-
 -export([start_link/0]).
 -export([init/1]).
 
 start_link() ->
-    supervisor:start_link(metadoctor, []).
+    supervisor:start_link({local, metadoctor}, metadoctor, []).
 
 init(_Args) ->
     {ok, {{one_for_one, 1, 60},
