@@ -1,32 +1,45 @@
-% Make the Doctor process restart itself if it should die.
+% Doctor module implemented as gen_server
 
 -module(doctor).
--export([loop/0, start/0]).
-loop() ->
-    process_flag(trap_exit, true), 
-    receive
-        new ->
-            io:format("Creating and monitoring process.~n"),
-            %register(revolver, spawn_link(fun roulette:loop/0)),
-            loop();
-        die ->
-            io:format("Oh shit...~n"), 
-            exit({doctor,die,at,erlang:time()});
-        help ->
-            io:format("Here, have a medkit!~n");
-        {'EXIT', From, Reason} -> 
-            io:format("The shooter ~p died with reason ~p. Restaring.~n", 
-                [From, Reason]),
-            self() ! new, 
-            loop()
-        end.
+-behaviour(gen_server).
 
-start() ->
+-export([
+    start_link/0,
+    init/1, 
+    handle_call/3, 
+    handle_cast/2, 
+    handle_info/2, 
+    terminate/2, 
+    code_change/3,
+    stop/0
+]).
+
+stop() ->
+    gen_server:cast(doctor, stop).
+
+start_link() ->
+    gen_server:start_link({local, doctor}, doctor, [], []).
+
+init(_Args) ->
     process_flag(trap_exit, true), 
-    register(doc, spawn_link(fun loop/0)),
-    doc ! new,
-    receive
-        {'EXIT', From, _} -> 
-            io:format("Ressurecting the doctor ~p.~n", [From]),
-            start()
-        end.
+    io:format("Starting new roulette game.~n"),
+    register(revolver, spawn_link(fun roulette:loop/0)),
+    {ok, 0}.
+
+handle_call(_Message, _From, State) -> {noreply, 0, State}.
+
+handle_cast(stop, State) -> {stop, normal, State};
+handle_cast(_Message, State) -> {noreply, State}.
+
+handle_info({'EXIT', From, Reason}, _State) -> 
+    io:format("Player ~p died. (~p)~n", [From, Reason]),
+    io:format("Starting new roulette game.~n"),
+    register(revolver, spawn_link(fun roulette:loop/0)),
+    {noreply, 0}.
+
+terminate(_Reason, _State) -> 
+    io:format("Stopping: ~p~n", [_Reason]), ok.
+
+code_change(_OldVersion, State, _Extra) -> 
+    io:format("I have changed!~n"),
+    {ok, State}.
