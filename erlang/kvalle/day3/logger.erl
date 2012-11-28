@@ -10,11 +10,15 @@
     handle_info/2, 
     terminate/2, 
     code_change/3,
+    die/0,
     log/1
 ]).
 
 log(Message) ->
     gen_server:cast(logger, {log, Message}).
+
+die() ->
+    gen_server:cast(logger, {die, "Aaaaargh!"}).
 
 % -- Callback functions
 
@@ -31,7 +35,9 @@ handle_call(_Message, _From, State) ->
 handle_cast(Message, State) ->
     case Message of
         {log, Log} ->
-            io:format("Should be logging ~p right about now.~n", [Log])
+            io:format("Should be logging ~p right about now.~n", [Log]);
+        {die, Reason} -> 
+            exit({Reason})
     end,
     {noreply, State}.
 
