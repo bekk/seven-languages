@@ -35,7 +35,7 @@ handle_call(_Message, _From, State) ->
 handle_cast(Message, State) ->
     case Message of
         {log, Log} ->
-            io:format("Should be logging ~p right about now.~n", [Log]);
+            file:write_file("log.log", io_lib:fwrite("~s\n", [Log]), [append]);
         {die, Reason} -> 
             exit({Reason})
     end,
