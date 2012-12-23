@@ -36,3 +36,58 @@ stringToNum (h:t) = if (isNumeric [h]) then read (h:t) :: Float else read t :: F
 -- starting with x. Then, write a function that includes every fifth number, beginning with y.
 -- Combine these functions through composition to return every eighth number, beginning with x + y.
 
+everyThird x = [x, (x + 3) ..]
+
+everyFifth y = [y, (y + 5) ..]
+
+everyEight x y = zipWith (+) (everyThird x) (everyFifth y)
+
+
+
+-- Use a partially applied function to define a function that will return half of a number and
+-- another that will append \n to the end of any string.
+
+half = (/ 2)
+
+newLine = (++ "\n")
+
+
+
+-- Write a function to determine the greatest common denominator of two integers.
+
+denominators x = divisors x 1 where
+  divisors x by = if (floor (x/by) == ceiling (x/by)) then floor(by):(divisors x (by + 1)) else (if (by > x) then [] else divisors x ( by + 1))
+
+myGcd x y = findPair (sortListBy (>=) ((denominators x) ++ (denominators y))) where
+  findPair (h1:h2:t) = if (h1 == h2) then h1 else findPair (h2:t)
+
+
+
+-- Create a lazy sequence of prime numbers.
+
+primes = nextPrime 1 where
+  nextPrime x = if (length (denominators x) <= 2) then (floor x):(nextPrime (x + 1)) else nextPrime (x + 1)
+
+
+
+-- Break a long string into individual lines at proper word boundaries.
+
+breakLineAt x string = insertBreak x 0 string [] where
+  insertBreak breakPoint wordCount (h:t) collected
+    | wordCount == breakPoint = insertBreak breakPoint 0 (h:t) (collected ++ "\n")
+    | [h] == " "              = insertBreak breakPoint (wordCount + 1) t (collected ++ [h])
+    | t == []                 = collected ++ [h]
+    | otherwise               = insertBreak breakPoint wordCount t (collected ++ [h])
+
+
+
+-- Add line numbers to the previous exercise.
+
+breakLineWithLineNumberAt x string = insertBreak (x + 1) 0 string [] 1 where
+  insertBreak breakPoint wordCount (h:t) collected lineNum
+    | wordCount == breakPoint = insertBreak breakPoint 0 (h:t) (collected ++ "\n") lineNum
+    | [h] == " "              = insertBreak breakPoint (wordCount + 1) t (collected ++ [h]) lineNum
+    | t == []                 = collected ++ [h]
+    | wordCount == 0          = insertBreak breakPoint (wordCount + 1) (h:t) (collected ++ (show lineNum) ++ ": ") (lineNum + 1)
+    | otherwise               = insertBreak breakPoint wordCount t (collected ++ [h]) lineNum
+    
